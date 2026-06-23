@@ -8,6 +8,9 @@ var cors = require('cors');
 const cookieParser= require('cookie-parser');
 const errorHandler= require('./middleware/error');
 
+//import routes
+const authRoutes= require('./routes/authRouts');
+
 //Database connection
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser: true,
@@ -22,11 +25,18 @@ mongoose.connect(process.env.DATABASE,{
 });
 
 //middlewares
-app.use(morgarn('dev'));
+app.use(morgan('dev'));
 app.use(bodyparser.json({limit: '5mb'}));
 app.use(bodyparser.urlencoded({limit: '5mb', extended: true}));
 app.use(cookieParser());
 app.use(cors());
+
+//router
+// app.get('/',(req,res)=>{
+//     res.send('Hello from backend');
+// });
+
+app.use('/api',authRoutes);
 
 // error middleqware
 app.use(errorHandler);
